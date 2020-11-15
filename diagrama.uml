@@ -1,0 +1,172 @@
+@startuml
+left to right direction
+
+' --Atores
+actor "Usuário do sistema" as sist_user
+actor "Visitante" as visitor
+actor "Estudante" as student
+actor "Educador" as prof
+actor "Administrador do sistema" as adm 
+
+
+package Servidor {
+  database "Banco de dados" {
+    component "Banco de dados das disciplinas" as comp3
+    component "Banco de dados dos usuários" as comp4
+  }
+  
+}
+package Cliente {
+  component "Componente de Usuários" as Usuário {
+    usecase "Gerenciar matrícula" as UC18
+    usecase "Buscar conteúdo" as UC19
+    usecase "Assistir conteúdo" as UC20
+    usecase "Interagir com o conteúdo" as UC22
+    usecase "Listar informações" as UC23
+    usecase "Fazer matrícula" as UC24
+    usecase "Cancelar matrícula" as UC25
+    usecase "Buscar aulas" as UC26
+    usecase "Buscar disciplinas" as UC27
+    usecase "Buscar educador" as UC28
+    usecase "Assitir aula" as UC29
+    usecase "Assistir livestream" as UC30
+    usecase "Avaliar uma aula positivamente" as UC31
+    usecase "Avaliar uma aula negativamente" as UC32
+    usecase "Trocar mensagens com um educador" as UC34
+    usecase "Fazer provas" as UC35
+    usecase "Listar aulas de uma disciplina" as UC36
+    usecase "Listar disciplinas de um educador" as UC37
+    usecase "Listar disciplinas matriculadas" as UC38
+    usecase "Listar material de apoio de uma disciplina" as UC39
+    usecase "Listar notas do usuário em uma disciplina" as UCNotas
+    usecase "Realizar cadastro" as UC40
+    usecase "Lidar com estudantes" as UC43
+    usecase "Listar todos os estudantes matriculados em uma disciplina sua" as UC44
+    usecase "Procurar estudante matriculado em uma de suas disciplinas" as UC45
+    usecase "Trocar mensagens com um estudante" as UC46
+    usecase "Avaliar conteúdo" as UC47
+    usecase "Responder conteúdo" as UC48
+    usecase "Submeter trabalho" as UC49
+    usecase "Listar informações de uma disciplina" as UC50
+    usecase "Listar informações de um educador" as UC51
+    usecase "Listar informações do usuário logado" as UC52
+    usecase "Listar livestreams de uma disciplina" as UC53
+    usecase "Listar informações básicas" as UC54
+    usecase "Listar informações de cadastro" as UC55
+    usecase "Alterar informações de cadastro" as UC56
+  }
+  component "Componente de Gestão" as Gestão {
+    usecase "Gerenciar aulas" as UC3
+    usecase "Gerenciar estudantes" as UC4
+    usecase "Gerenciar disciplinas" as UC6
+    usecase "Gerenciar educadores" as UC7
+    usecase "Gerenciar sistema" as UC8
+    usecase "Escolher se uma disciplina deve ser pública ou privada" as UC9
+    usecase "Encerrar período de uma disciplina" as UC11
+  }
+  
+  component "Componente de conteúdo" as Conteúdo {
+    usecase "Gerenciar conteúdo" as UC12
+    usecase "Criar uma disciplina" as UC13
+    usecase "Disponibilizar/remover aula de uma disciplina" as UC14
+    usecase "Disponibilizar/remover provas" as UC15
+    usecase "Disponibilizar/remover material de apoio" as UC16
+    usecase "Iniciar livestream" as UC17
+  }
+  
+  component "Componente de acesso a ceonteúdo" as comp1
+  component "Componente de acesso aos dados de usuário" as comp2
+  
+  package "Interface Gráfica" {
+    component "Página web" as pagina
+  }
+}
+
+pagina --> Usuários
+pagina --> Gestão
+pagina --> Conteúdo
+
+Usuários --> comp1
+Usuários --> comp2
+Gestão --> comp1
+Gestão --> comp2
+Conteúdo --> comp1
+Conteúdo --> comp2
+
+comp1 --> comp3
+comp2 --> comp4
+' --Associações
+adm --> UC8:use
+prof --> UC12:use
+prof --> UC43:use
+visitor --> UC40:use
+visitor --> UC20:use
+student --> UC18:use
+student --> UC19:use
+student --> UC20:use
+student --> UC22:use
+student --> UC23:use
+student --> UC56:use
+
+' --Heranças
+sist_user <|-- visitor
+sist_user <|-- student
+student <|-- prof
+prof <|-- adm
+
+' --Extends e includes
+' Componente de gestão
+UC8--UC3:extend
+UC8--UC4:extend
+UC8--UC6:extend
+UC8--UC7:extend
+UC13--UC9:include
+UC12--UC11:extend
+
+' Componente de conteúdo
+UC12--UC13:extend
+UC12--UC14:extend
+UC12--UC15:extend
+UC12--UC16:extend
+UC12--UC17:extend
+
+' Componente de usuário
+UC18--UC24:extend
+UC18--UC2:extend
+UC19--UC26:extend
+UC19--UC27:extend
+UC19--UC28:extend
+UC20--UC29:extend
+UC20--UC30:extend
+UC22--UC48:extend
+UC22--UC47:extend
+UC22--UC34:extend
+UC23--UC50:extend
+UC23--UC51:extend
+UC23--UC52:extend
+UC43--UC44:extend
+UC43--UC45:extend
+UC43--UC46:extend
+UC47--UC31:extend
+UC47--UC32:extend
+UC48--UC35:extend
+UC48--UC49:extend
+UC50--UC39:extend
+UC50--UC36:extend
+UC50--UCNotas:extend
+UC50--UC53:extend
+UC51--UC37:extend
+UC51--UC54:extend
+UC52--UC38:extend
+UC52--UC55:extend
+
+' --Observações
+note right of UC8
+Funções: 
+Procurar;
+Listar;
+Remover;
+Registrar
+endnote
+
+@enduml
